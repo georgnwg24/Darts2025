@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="header">
+    <h2>Games List</h2>
+    <div class="actions">
+      <button 
+        class="toggle-btn"
+        (click)="toggleArchivedView()"
+      >
+        {{ showArchived ? 'Show Active Games' : 'Show Archived Games' }}
+      </button>
+      <button 
+        class="new-game-btn"
+        (click)="redirectToAddGame()"
+      >
+        Create New Game
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Home Team</th>
+          <th>Away Team</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let game of displayedGames; index as i">
+          <td>
+            <div class="team-name">{{ game.teamData[0].teamName }}</div>
+            <div class="players" *ngIf="game.teamData[0]?.playerNames">
+              {{ game.teamData[0].playerNames.join(', ') }}
+            </div>
+          </td>
+          <td>
+            <div class="team-name">{{ game.teamData[1].teamName }}</div>
+            <div class="players" *ngIf="game.teamData[1]?.playerNames">
+              {{ game.teamData[1].playerNames.join(', ') }}
+            </div>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="{
+              'active': game.status === 'active',
+              'complete': game.status === 'complete'
+            }">
+              {{ game.status | titlecase }}
+            </span>
+            <div *ngIf="game.gameWinner" class="winner">
+              Winner: {{ game.gameWinner }}
+            </div>
+            <div *ngIf="game.archived" class="archived">
+              Archived
+            </div>
+          </td>
+          <td class="actions-cell">
+            <button 
+              class="btn dashboard-btn"
+              (click)="redirectToGameDashboard(game._id)"
+            >
+              Dashboard
+            </button>
+            <button 
+              class="btn archive-btn"
+              (click)="toggleArchive(game._id)"
+            >
+              {{ game.archived ? 'Unarchive' : 'Archive' }}
+            </button>
+            <button 
+              class="btn delete-btn"
+              (click)="deleteGame(game._id, i)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="displayedGames.length === 0" class="empty-message">
+      No {{ showArchived ? 'archived' : 'active' }} games found
+    </div>
+  </div>
+</div>

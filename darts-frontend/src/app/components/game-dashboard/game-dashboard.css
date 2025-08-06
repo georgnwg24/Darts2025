@@ -1,0 +1,136 @@
+/* game-dashboard.css */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.game-state-panel, 
+.dartboard-panel {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-state-panel {
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+}
+
+.teams-header {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 90px;
+  font-size: 2.6rem;
+}
+
+.active-team {
+  color: #0466c9;
+  font-weight: bold;
+  text-decoration-line: underline;
+}
+
+.team-scores {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.team-score {
+  text-align: center;
+}
+
+.score-value {
+  font-size: 2.6rem;
+  font-weight: bold;
+}
+
+.current-player {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.player-name {
+  font-size: 2.0rem;
+  font-weight: bold;
+}
+
+.round-throws {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.throw-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  width: 80px;
+  text-align: center;
+}
+
+.throw-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.throw-value {
+  font-size: 1.6rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #cde5fc;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:disabled {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+.round-info {
+  margin-top: 120px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.dartboard-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff7e3;
+  overflow: visible;
+}
+
+.dartboard-message,
+.game-status-message {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.loading-message,
+.error-message {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+.error-message {
+  color: #d32f2f;
+}

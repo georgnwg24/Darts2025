@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+    overflow: visible;
+}
+
+.dartboard-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.dartboard {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.dart-section {
+    stroke-width: 1;
+    stroke: #000;
+}
+
+.dart-section:hover {
+    cursor: crosshair;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
+}
+
+.value-label {
+    fill: #d6d6d6;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+:host.inactive .dart-section {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+:host.inactive .dart-section:hover {
+    cursor: not-allowed;
+    filter: none;
+}

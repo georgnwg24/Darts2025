@@ -1,0 +1,97 @@
+<!-- game-dashboard.html -->
+<div class="dashboard-container">
+  <!-- Left Panel - Game State -->
+  <div class="game-state-panel">
+    <ng-container *ngIf="game; else loading">
+      <!-- Team vs Team Header -->
+      <h2 class="teams-header">
+        <span [class.active-team]="game.currentTeamIndex === 0">
+          {{ game.teamData[0].teamName }}
+        </span>
+        vs
+        <span [class.active-team]="game.currentTeamIndex === 1">
+          {{ game.teamData[1].teamName }}
+        </span>
+      </h2>
+
+      <!-- Team Scores -->
+      <div class="team-scores">
+        <div class="team-score" *ngFor="let team of game.teamData; index as i">
+          <h3 [class.active-team]="game.currentTeamIndex === i">
+            {{ team.teamName }}
+          </h3>
+          <div class="score-value">{{ getTeamScore(i) }}</div>
+        </div>
+      </div>
+
+      <!-- Current Player -->
+      <div class="current-player">
+        <h3>Spieler:</h3>
+        <div class="player-name">{{ currentPlayerName }}</div>
+      </div>
+
+      <!-- Current Round Throws -->
+      <div class="round-throws">
+        <div class="throw-box" *ngFor="let throw of [0,1,2]; index as i">
+          <div class="throw-label">Wurf {{ i + 1 }}</div>
+          <div class="throw-value">
+            {{ currentRoundThrows[i] ?? '-' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button (click)="onRollback()">
+          Wurf zurücknehmen
+        </button>
+        <button *ngIf="isTurnEnded" (click)="onContinue()">
+          Fortsetzen
+        </button>
+      </div>
+
+      <!-- Round Information -->
+      <div class="round-info">
+        Runde {{ game.currentRound }} von {{ game.roundLimit }}
+      </div>
+
+      <div class="action-buttons">
+        <button (click)="onBackToGamesTabel()">
+          Spiele Übersicht
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading-message" *ngIf="isLoading">Lade Spiel...</div>
+      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+    </ng-template>
+  </div>
+
+  <!-- Right Panel - Dartboard -->
+  <div class="dartboard-panel">
+    <ng-container *ngIf="game?.status === 'active'; else gameStatus">
+      <app-dartboard 
+        *ngIf="isDartboardActive"
+        (throwRecorded)="onThrowRecorded($event)">
+      </app-dartboard>
+      
+      <div *ngIf="!isDartboardActive" class="dartboard-message">
+        <p *ngIf="isTurnEnded">Wurf abgeschlossen! Drücke Fortsetzen</p>
+        <p *ngIf="!isTurnEnded">Dartboard ist deaktiviert</p>
+      </div>
+    </ng-container>
+
+    <ng-template #gameStatus>
+      <div class="game-status-message">
+        <h3>Spiel beendet!</h3>
+        <p *ngIf="game?.gameWinner; else tie">
+          Sieger: {{ game?.gameWinner }}
+        </p>
+        <ng-template #tie>
+          <p>Unentschieden</p>
+        </ng-template>
+      </div>
+    </ng-template>
+  </div>
+</div>

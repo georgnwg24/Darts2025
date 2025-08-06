@@ -1,0 +1,174 @@
+<div class="container">
+  <h2>Create New Game</h2>
+  
+  <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+    <!-- Game Settings -->
+    <div class="form-section">
+      <h3>Game Settings</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roundLimit">Round Limit *</label>
+          <input 
+            type="number" 
+            id="roundLimit" 
+            formControlName="roundLimit"
+            min="1"
+          >
+          <div 
+            *ngIf="gameForm.get('roundLimit')?.invalid && 
+                   gameForm.get('roundLimit')?.touched" 
+            class="error"
+          >
+            Round limit must be at least 1
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="scoreLimit">Score Limit (optional)</label>
+          <input 
+            type="number" 
+            id="scoreLimit" 
+            formControlName="scoreLimit"
+            min="1"
+          >
+          <div class="hint">Leave blank for no score limit</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Teams Section -->
+    <div class="teams-container">
+      <!-- Home Team -->
+      <div class="team-form">
+        <h3>Home Team</h3>
+        <div formGroupName="homeTeam">
+          <div class="form-group">
+            <label for="homeTeamName">Team Name *</label>
+            <input 
+              type="text" 
+              id="homeTeamName" 
+              formControlName="teamName"
+            >
+            <div 
+              *ngIf="gameForm.get('homeTeam.teamName')?.invalid && 
+                     gameForm.get('homeTeam.teamName')?.touched" 
+              class="error"
+            >
+              Team name must be at least 2 characters
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="homePlayer1">Player 1 *</label>
+            <input 
+              type="text" 
+              id="homePlayer1" 
+              formControlName="player1"
+            >
+            <div 
+              *ngIf="gameForm.get('homeTeam.player1')?.invalid && 
+                     gameForm.get('homeTeam.player1')?.touched" 
+              class="error"
+            >
+              Player name must be at least 2 characters
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="homePlayer2">Player 2 *</label>
+            <input 
+              type="text" 
+              id="homePlayer2" 
+              formControlName="player2"
+            >
+            <div 
+              *ngIf="gameForm.get('homeTeam.player2')?.invalid && 
+                     gameForm.get('homeTeam.player2')?.touched" 
+              class="error"
+            >
+              Player name must be at least 2 characters
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Away Team -->
+      <div class="team-form">
+        <h3>Away Team</h3>
+        <div formGroupName="awayTeam">
+          <div class="form-group">
+            <label for="awayTeamName">Team Name *</label>
+            <input 
+              type="text" 
+              id="awayTeamName" 
+              formControlName="teamName"
+            >
+            <div 
+              *ngIf="gameForm.get('awayTeam.teamName')?.invalid && 
+                     gameForm.get('awayTeam.teamName')?.touched" 
+              class="error"
+            >
+              Team name must be at least 2 characters
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="awayPlayer1">Player 1 *</label>
+            <input 
+              type="text" 
+              id="awayPlayer1" 
+              formControlName="player1"
+            >
+            <div 
+              *ngIf="gameForm.get('awayTeam.player1')?.invalid && 
+                     gameForm.get('awayTeam.player1')?.touched" 
+              class="error"
+            >
+              Player name must be at least 2 characters
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="awayPlayer2">Player 2 *</label>
+            <input 
+              type="text" 
+              id="awayPlayer2" 
+              formControlName="player2"
+            >
+            <div 
+              *ngIf="gameForm.get('awayTeam.player2')?.invalid && 
+                     gameForm.get('awayTeam.player2')?.touched" 
+              class="error"
+            >
+              Player name must be at least 2 characters
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Create Game</span>
+        <span *ngIf="isLoading">Creating...</span>
+      </button>
+      
+      <button 
+        type="button" 
+        class="cancel-btn"
+        (click)="navigateToGames()"
+      >
+        Cancel
+      </button>
+    </div>
+    
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
