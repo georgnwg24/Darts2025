@@ -6,7 +6,7 @@ import { CreateGameDto, Game, RecordThrowDto } from '../models/game.models';
 @Injectable({
   providedIn: 'root'
 })
-export class GamesService {
+export class GameService {
   private readonly gamesUrl = `/api/games`;
 
   constructor(

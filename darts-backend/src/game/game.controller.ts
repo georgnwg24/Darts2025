@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { GameService } from './games.service';
+import { GameService } from './game.service';
 import { CreateGameDto } from './dtos/create-game.dto';
 import { plainToInstance } from 'class-transformer';
 import { GameResponseDto } from './dtos/game-response.dto';
 import { RecordThrowDto } from './dtos/record-throw.dto';
 
 @Controller('games')
-export class GamesController {
+export class GameController {
   constructor(
     private gameService: GameService,
   ) {}

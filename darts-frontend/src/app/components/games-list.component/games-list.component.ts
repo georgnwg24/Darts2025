@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GamesService } from '../../services/games.service';
+import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game.models';
@@ -16,7 +16,7 @@ export class GamesListComponent {
   showArchived = false;
 
   constructor (
-    private gamesService: GamesService,
+    private gameService: GameService,
     private router: Router
   ) {}
 
@@ -25,7 +25,7 @@ export class GamesListComponent {
   }
 
   loadGames(): void {
-    this.gamesService.getAllGames().subscribe(games => {
+    this.gameService.getAllGames().subscribe(games => {
       this.games = games;
       this.filterGames();
     })
@@ -44,7 +44,7 @@ export class GamesListComponent {
 
   deleteGame(id: string, index: number): void {
     if (confirm('Are you sure you want to delete this team?')) {
-      this.gamesService.deleteGame(id).subscribe(() => {
+      this.gameService.deleteGame(id).subscribe(() => {
         this.games.splice(index, 1);
         this.filterGames();
       });
@@ -52,7 +52,7 @@ export class GamesListComponent {
   }
 
   toggleArchive(id: string): void {
-    this.gamesService.toggleArchive(id).subscribe(updatedGame => {
+    this.gameService.toggleArchive(id).subscribe(updatedGame => {
       const index = this.games.findIndex(g => g._id === id);
       if (index !== -1) {
         this.games[index] = updatedGame;

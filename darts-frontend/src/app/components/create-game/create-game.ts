@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CreateGameDto } from '../../models/game.models';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GamesService } from '../../services/games.service';
+import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -18,7 +18,7 @@ export class CreateGame {
 
   constructor(
     private fb: FormBuilder,
-    private gamesService: GamesService,
+    private gameService: GameService,
     private router: Router
   ) {
     this.gameForm = this.fb.group({
@@ -68,7 +68,7 @@ export class CreateGame {
       ]
     };
 
-    this.gamesService.createGame(createGameDto).subscribe({
+    this.gameService.createGame(createGameDto).subscribe({
       next: (game) => {
         this.isLoading = false;
         this.router.navigate(['/games', game._id]);

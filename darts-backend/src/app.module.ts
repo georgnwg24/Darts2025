@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GamesModule } from './games/games.module';
+import { GameModule } from './game/game.module';
 
 
 const uri = 'mongodb://localhost:27017/dartsdbkophase';
@@ -10,7 +10,7 @@ const uri = 'mongodb://localhost:27017/dartsdbkophase';
 @Module({
   imports: [
     MongooseModule.forRoot(uri),
-    GamesModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

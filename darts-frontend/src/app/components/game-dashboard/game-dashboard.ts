@@ -4,7 +4,7 @@ import { DartboardComponent } from '../dartboard.component/dartboard.component';
 import { Subject, takeUntil } from 'rxjs';
 import { Game, RecordThrowDto, TeamData } from '../../models/game.models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GamesService } from '../../services/games.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-game-dashboard',
@@ -27,7 +27,7 @@ export class GameDashboard {
 
     constructor(
     private route: ActivatedRoute,
-    private gamesService: GamesService,
+    private gameService: GameService,
     private router: Router
   ) {}
 
@@ -42,7 +42,7 @@ export class GameDashboard {
   }
 
   loadGame(id: string): void {
-    this.gamesService.getGameById(id)
+    this.gameService.getGameById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (game) => {
@@ -121,7 +121,7 @@ export class GameDashboard {
       score: score
     };
     
-    this.gamesService.recordThrow(this.game._id, recordThrowDto)
+    this.gameService.recordThrow(this.game._id, recordThrowDto)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (updatedGame) => {
@@ -151,7 +151,7 @@ export class GameDashboard {
 
     this.lastPlayedTeamIndex = null;
     
-    this.gamesService.rollBackThrow(this.game._id)
+    this.gameService.rollBackThrow(this.game._id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (rolledBackGame) => {
