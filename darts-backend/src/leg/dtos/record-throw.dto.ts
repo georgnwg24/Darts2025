@@ -2,7 +2,7 @@ import { IsNumber, IsString, Min, Max } from 'class-validator';
 
 export class RecordThrowDto {
   @IsString()
-  teamName: string;
+  teamId: string;
 
   @IsNumber()
   @Min(0)
