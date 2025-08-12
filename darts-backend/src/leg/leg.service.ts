@@ -4,7 +4,6 @@ import { Leg, LegDocument, TeamData } from './schemas/leg.schema';
 import { Model, Types } from 'mongoose';
 import { ValidationService } from 'src/validation/validation.service';
 import { TeamService } from 'src/team/team.service';
-import { CreateLegDto } from './dtos/create-leg.dto';
 import { Status } from 'src/game/schemas/game.schema';
 import { RecordThrowDto } from './dtos/record-throw.dto';
 
@@ -18,11 +17,11 @@ export class LegService {
         private validationService: ValidationService, 
     ) {}
 
-  async createLeg(createLegDto: CreateLegDto): Promise<LegDocument> {
-    this.logger.log(`Creating leg: ${JSON.stringify(createLegDto)}`);
+  async createLeg(roundLimit: number, teamIds: string[], scoreLimit?: number): Promise<LegDocument> {
+    this.logger.log(`Creating leg: roundLimit: ${roundLimit}, scoreLimit: ${scoreLimit}, teamIds: ${teamIds.toString()}`);
     try {
       const teamData: TeamData[] = [];
-      for (const teamId of createLegDto.teamIds) {
+      for (const teamId of teamIds) {
         const team = await this.teamService.findById(teamId.toString());
         teamData.push({
           teamId: team.id,
@@ -34,8 +33,8 @@ export class LegService {
 
       const leg = new this.legModel({
         currentRound: 1,
-        roundLimit: createLegDto.roundLimit,
-        scoreLimit: createLegDto.scoreLimit,
+        roundLimit: roundLimit,
+        scoreLimit: scoreLimit,
         teamData,
         currentTeamIndex: 0,
         status: Status.ACTIVE,
@@ -68,6 +67,10 @@ export class LegService {
     this.logger.log(`Recording throw for leg ${id}: ${JSON.stringify(recordThrowDto)}`);
     try { 
       const leg = await this.findById(id);
+
+      if (leg.permanent) {
+        throw new BadRequestException(`Throw can not be recorded as. Leg ${id} is already permanent`);
+      }
 
       if(recordThrowDto.teamId != leg.teamData[leg.currentTeamIndex].teamId.toString()) {
         throw new BadRequestException(`It's not team ${recordThrowDto.teamId}'s turn`);
@@ -166,6 +169,10 @@ export class LegService {
     try {
       const leg = await this.findById(id);
 
+      if (leg.permanent) {
+        throw new BadRequestException(`Rollback not possible. Leg ${id} is already permanent`);
+      }
+
       leg.legWinner = undefined; // Reset winner
       leg.status = Status.ACTIVE;
 
@@ -230,6 +237,12 @@ export class LegService {
     return throwsByRound
       .flat()
       .reduce((total, score) => total + score, 0);
+  }
+
+  async makePermanent(id: string): Promise<void> {
+    const leg = await this.findById(id);
+    leg.permanent = true;
+    leg.save();
   }
 
   async delete(id: string): Promise<void> {

@@ -17,5 +17,5 @@ export class CreateGameDto {
 
   @IsArray()
   @ArrayMinSize(2)
-  teamIds: number[];
+  teamIds: string[];
 }

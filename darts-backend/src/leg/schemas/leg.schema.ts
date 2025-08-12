@@ -21,29 +21,31 @@ export class TeamData {
 @Schema()
 export class Leg {
 
-    _id: Types.ObjectId;
-    
-    @Prop({ type: [TeamData], required: true })
-    teamData: TeamData[];
+  _id: Types.ObjectId;
+  
+  @Prop({ type: [TeamData], required: true })
+  teamData: TeamData[];
 
-    @Prop({ required: true, default: 0 })
-    currentTeamIndex: number;
+  @Prop({ required: true, default: 0 })
+  currentTeamIndex: number;
 
-    @Prop({ required: true, default: 1 })
-    currentRound: number;
+  @Prop({ required: true, default: 1 })
+  currentRound: number;
 
-    @Prop({ required: true, default: 10 })
-    roundLimit: number; // Maximum number of rounds per leg
+  @Prop({ required: true, default: 10 })
+  roundLimit: number; // Maximum number of rounds per leg
 
-    @Prop({ required: false })
-    scoreLimit?: number;
+  @Prop({ required: false })
+  scoreLimit?: number;
 
-    @Prop({ enum: Status, required: true, default: Status.ACTIVE })
-    status: Status;
+  @Prop({ enum: Status, required: true, default: Status.ACTIVE })
+  status: Status;
 
-    @Prop({ required: false })
-    @Prop({ type: Types.ObjectId, ref: 'Team', required: true })
-    legWinner?: Types.ObjectId; // id of the team that won the leg
+  @Prop({ type: Types.ObjectId, ref: 'Team', required: false })
+  legWinner?: Types.ObjectId; // id of the team that won the leg
+
+  @Prop({ required: true, default: false })
+  permanent: boolean; // true after the leg is finished and GameService.handleLegCompletion() is called
 }
 
 export const LegSchema = SchemaFactory.createForClass(Leg);

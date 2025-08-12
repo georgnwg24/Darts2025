@@ -16,9 +16,25 @@ export class GameService {
     private validationService: ValidationService,
   ) {}
 
-  async createGame(createGameDto: CreateGameDto): Promise<GameDocument> {
+  async createGame(createGameDto: CreateGameDto): Promise<GameDocument> {    
+    // Create initial leg
+    const initialLeg = await this.legService.createLeg(
+      createGameDto.roundLimit,
+      createGameDto.teamIds,
+      createGameDto.scoreLimit
+    );
+ 
+    // Create game
+    const game = new this.gameModel({
+      teamIds: createGameDto.teamIds,
+      legIds: [initialLeg],
+      legLimit: createGameDto.legLimit,
+      roundLimit: createGameDto.roundLimit,
+      scoreLimit: createGameDto.scoreLimit,
+      status: Status.ACTIVE,
+    });
 
-    // TODO: Create a game with an "empty" leg
+    return game.save();
   }
 
   async findById(id: string): Promise<GameDocument> {
@@ -45,6 +61,7 @@ export class GameService {
     const game = await this.findById(id);
 
     // TODO
+    // Determine game winner, if there is none, create a new leg and make the last one permanent.
 
     return await game.save();
   }
@@ -65,6 +82,4 @@ export class GameService {
       throw new NotFoundException(`Game with id ${id} not found for deletion`);
     }
   }
-
-
 }
